@@ -128,6 +128,11 @@ from django.db.models import Sum
 from django.utils.timezone import now
 from .models import User, Subject, Course, TeachingRecord
 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.contrib import messages
+
 def faculty_login(request):
     """
     View for faculty login.
@@ -141,14 +146,16 @@ def faculty_login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            if user:
-                # Log the faculty member in
-                login(request, user)
-                # Redirect to a faculty dashboard or home page (customize as needed)
-                return redirect(reverse('faculty_dashboard'))
+            # Log the user in
+            login(request, user)
+            
+            # Check if the user is a superuser
+            if user.is_superuser:
+                # Redirect to the superuser dashboard
+                return redirect(reverse('superuser_dashboard'))
             else:
-                messages.error(request, 'You are not authorized to access this page.')
-                return redirect(reverse('faculty_login'))
+                # Redirect to a faculty dashboard or home page
+                return redirect(reverse('faculty_dashboard'))
         else:
             # Authentication failed
             messages.error(request, 'Invalid login credentials.')
@@ -159,13 +166,18 @@ def faculty_login(request):
 
 
 
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import TeachingRecord
 
 @login_required
 def faculty_dashboard(request):
+    
     user = request.user
+    if request.user.is_superuser:
+        # Redirect superusers to the superuser dashboard
+        return redirect(reverse('superuser_dashboard'))
     # Filter records for the current user and order by start_time in descending order
     teaching_records = TeachingRecord.objects.filter(faculty=user).order_by('-start_time')
     
@@ -506,4 +518,110 @@ def profile_view(request):
     return render(request, 'profile.html', context)
 
 def home(request):
-    return render(request,"homepage.html")
+    # Check if the user is authenticated (logged in)
+    if request.user.is_authenticated:
+        # If the user is logged in, redirect them to faculty_dashboard
+        return redirect(reverse('faculty_dashboard'))
+    
+    # If the user is not logged in, render the homepage as usual
+    return render(request, 'homepage.html')
+
+
+from django.http import HttpResponse
+from openpyxl import Workbook
+from datetime import datetime
+from .models import TeachingRecord, User
+
+def download_excel(request):
+    # Create a new workbook
+    workbook = Workbook()
+    
+    # Fetch all faculty members (users with profiles)
+    faculty_members = User.objects.filter(profile__isnull=False)
+    
+    # Retrieve start_date and end_date from query parameters
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+    
+    # Initialize variables for start_date and end_date
+    start_date = None
+    end_date = None
+    
+    if start_date_str and end_date_str:
+        # Convert query parameters to datetime.date objects
+        try:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            return HttpResponse("Invalid date format. Please use YYYY-MM-DD.", status=400)
+    
+    # Loop through each faculty member
+    for faculty in faculty_members:
+        # Create a new worksheet for each faculty member
+        sheet = workbook.create_sheet(title=faculty.username)
+        
+        # Add headers to the sheet
+        headers = ['Subject', 'Course', 'Topic Taught', 'Start Time', 'End Time', 'Description', 'Salary']
+        sheet.append(headers)
+        
+        # Filter teaching records based on the date range and the faculty
+        teaching_records = TeachingRecord.objects.filter(
+            faculty=faculty
+        )
+        
+        if start_date and end_date:
+            teaching_records = teaching_records.filter(
+                start_time__date__gte=start_date,
+                end_time__date__lte=end_date
+            )
+        
+        # Variable to store total salary
+        total_salary = 0
+        
+        # Add rows for each teaching record
+        for record in teaching_records:
+            # Calculate total salary for the faculty
+            total_salary += record.salary
+            
+            # Convert start_time and end_time to naive datetime (remove timezone)
+            start_time_naive = record.start_time.replace(tzinfo=None) if record.start_time else None
+            end_time_naive = record.end_time.replace(tzinfo=None) if record.end_time else None
+            
+            # Append the record data to the sheet
+            row_data = [
+                record.subject.name,
+                record.course.name,
+                record.topic_taught,
+                start_time_naive,
+                end_time_naive,
+                record.description,
+                record.salary
+            ]
+            sheet.append(row_data)
+        
+        # Add total salary at the end of the sheet
+        sheet.append(['', '', '', '', '', 'Total Salary', total_salary])
+    
+    # Remove the default sheet created by openpyxl
+    workbook.remove(workbook.active)
+    
+    # Create an HTTP response with the Excel file as an attachment
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="faculty_data.xlsx"'
+    
+    # Save the workbook to the response object
+    workbook.save(response)
+    
+    # Return the response
+    return response
+
+
+def error_404(request, exception):
+    # Render a custom 404 error page
+    return render(request, 'error.html', {}, status=404)
+
+def error_500(request):
+    # Render a custom 500 error page (optional)
+    return render(request, 'error.html', {}, status=500)

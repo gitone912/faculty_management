@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('login/', views.faculty_login, name='faculty_login'),
     
@@ -14,5 +15,6 @@ urlpatterns = [
     path('admin/csv/', views.admin_csv, name='admin_csv'),
     path('admin/doc/', views.admin_doc, name='admin_doc'),
     path('profile/', views.profile_view, name='profile'),
-    path("",views.home)
+    path("",views.home),
+    path('download_excel/', views.download_excel, name='download_excel'),
 ]

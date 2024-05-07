@@ -134,6 +134,10 @@
         <button id="download_doc_btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             Download as DOC
         </button>
+
+        <button id="download_excel_btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Download as Excel
+        </button>
     </div>
 </div>
 <script>
@@ -169,6 +173,21 @@
         
         // Generate the URL for downloading the DOC report
         const downloadUrl = generateDownloadUrl('{% url 'admin_doc' %}', startDate, endDate);
+        
+        // Redirect to the generated URL
+        window.location.href = downloadUrl;
+    });
+
+    document.getElementById('download_excel_btn').addEventListener('click', function (event) {
+        // Prevent the default action of the button
+        event.preventDefault();
+        
+        // Get the selected start and end dates
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        
+        // Generate the URL for downloading the DOC report
+        const downloadUrl = generateDownloadUrl('{% url 'download_excel' %}', startDate, endDate);
         
         // Redirect to the generated URL
         window.location.href = downloadUrl;
