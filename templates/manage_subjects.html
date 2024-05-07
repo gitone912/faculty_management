@@ -1,0 +1,63 @@
+<!-- In templates/faculty_management/manage_subjects.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Manage Subjects</h2>
+
+    <!-- Form for creating/updating subjects -->
+    <div class="form-container">
+        <h3>Add/Update Subject</h3>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Subject Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+
+    <!-- List of existing subjects -->
+    <div class="subject-list">
+        <h3>Subject List</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in subjects %}
+                    <tr>
+                        <td>{{ subject.name }}</td>
+                        <td>{{ subject.description }}</td>
+                        <td>
+                            <!-- Include links for editing and deleting subjects -->
+                            <a href="{% url 'edit_subject' subject.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                            <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Display success and error messages -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

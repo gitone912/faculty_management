@@ -1,0 +1,34 @@
+<!-- In templates/faculty_management/salary_report.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Salary Report</h2>
+
+    <!-- Display daily and monthly salary -->
+    <div class="salary-info">
+        <h3>Your Salary Information</h3>
+
+        <div class="daily-salary">
+            <h4>Daily Salary</h4>
+            <p>Today, you earned Rs {{ daily_salary | floatformat:2 }} for your teaching activities.</p>
+        </div>
+
+        <div class="monthly-salary">
+            <h4>Monthly Salary</h4>
+            <p>This month, you have earned Rs {{ monthly_salary | floatformat:2 }} for your teaching activities.</p>
+        </div>
+    </div>
+
+    <!-- Display success and error messages -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

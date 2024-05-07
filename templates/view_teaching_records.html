@@ -1,0 +1,89 @@
+<!-- In templates/faculty_management/view_teaching_records.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>View Teaching Records</h2>
+
+    <!-- Filters for teaching records -->
+    <div class="filter-container">
+        <h3>Filter Records</h3>
+        <form method="GET" action="">
+            <div class="mb-3">
+                <label for="faculty" class="form-label">Faculty</label>
+                <select class="form-select" id="faculty" name="faculty">
+                    <option value="">All</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}" {% if user.id == request.GET.faculty %}selected{% endif %}>{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <select class="form-select" id="subject" name="subject">
+                    <option value="">All</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}" {% if subject.id == request.GET.subject %}selected{% endif %}>{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="course" class="form-label">Course</label>
+                <select class="form-select" id="course" name="course">
+                    <option value="">All</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}" {% if course.id == request.GET.course %}selected{% endif %}>{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="date_start" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="date_start" name="date_start" value="{{ request.GET.date_start }}">
+            </div>
+            <div class="mb-3">
+                <label for="date_end" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="date_end" name="date_end" value="{{ request.GET.date_end }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
+
+    <!-- List of teaching records -->
+    <div class="record-list">
+        <h3>Teaching Records</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Faculty</th>
+                    <th>Subject</th>
+                    <th>Course</th>
+                    <th>Topic Taught</th>
+                    <th>Date Taught</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>{{ record.faculty.username }}</td>
+                        <td>{{ record.subject.name }}</td>
+                        <td>{{ record.course.name }}</td>
+                        <td>{{ record.topic_taught }}</td>
+                        <td>{{ record.date_taught }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Display success and error messages -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

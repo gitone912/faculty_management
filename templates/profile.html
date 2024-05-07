@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="h-full ml-14 mt-14 mb-10 md:ml-64">
+    <h2 class="text-xl font-semibold mb-4 mt-5 text-center md:text-2xl">Profile</h2>
+
+    <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        <div class="mb-4">
+            <label class="block text-white font-semibold">Name:</label>
+            <p class="text-gray-300">{{ name }}</p>
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white font-semibold">Username:</label>
+            <p class="text-gray-300">{{ username }}</p>
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white font-semibold">Email:</label>
+            <p class="text-gray-300">{{ email }}</p>
+        </div>
+        
+        {% if role == "Visiting Faculty" %}
+        <div class="mb-4">
+            <label class="block text-white font-semibold">Experience:</label>
+            <p class="text-gray-300">{{ experience }} years</p>
+        </div>
+        {% endif %}
+        
+        <div class="mb-4">
+            <label class="block text-white font-semibold">Role:</label>
+            <p class="text-gray-300">{{ role }}</p>
+        </div>
+    </div>
+</div>
+{% endblock body %}

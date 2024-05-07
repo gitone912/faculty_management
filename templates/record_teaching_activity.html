@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mx-auto mt-20 px-4 lg:pl-64">
+    <h2 class="text-xl font-semibold mb-4">Record Teaching Activity</h2>
+
+    <!-- Form for recording teaching activity -->
+    <div class="form-container bg-gray-800 p-4 rounded-lg shadow-md">
+        <h3 class="text-lg mb-3">Enter Teaching Details</h3>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="subject" class="block text-white mb-1">Subject</label>
+                <select class="form-select w-full p-2 rounded-lg bg-gray-700 text-white" id="subject" name="subject" required>
+                    <option value="" disabled selected>Choose a subject</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}">{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="course" class="block text-white mb-1">Course</label>
+                <select class="form-select w-full p-2 rounded-lg bg-gray-700 text-white" id="course" name="course" required>
+                    <option value="" disabled selected>Choose a course</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="topic_taught" class="block text-white mb-1">Topic Taught</label>
+                <input type="text" class="w-full p-2 rounded-lg bg-gray-700 text-white" id="topic_taught" name="topic_taught" required>
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-white mb-1">Description</label>
+                <textarea class="w-full p-2 rounded-lg bg-gray-700 text-white" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="start_time" class="block text-white mb-1">Start Time</label>
+                <input type="datetime-local" class="w-full p-2 rounded-lg bg-gray-700 text-white" id="start_time" name="start_time" required>
+            </div>
+            <div class="mb-4">
+                <label for="end_time" class="block text-white mb-1">End Time</label>
+                <input type="datetime-local" class="w-full p-2 rounded-lg bg-gray-700 text-white" id="end_time" name="end_time" required>
+            </div>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">Record Activity</button>
+        </form>
+    </div>
+
+    <!-- Display success and error messages -->
+    {% if messages %}
+    <div class="mt-4">
+        {% for message in messages %}
+            <div class="p-3 mb-4 text-lg text-center bg-blue-100 text-blue-800 border-2 border-blue-400 rounded-lg shadow-lg">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+</div>
+{% endblock body %}

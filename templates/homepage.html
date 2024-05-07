@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Visiting Faculty</title>
+    <link rel="icon" href="path_to_logo.png"> <!-- Update path to logo -->
+    <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Sans', Verdana, sans-serif;
+        }
+
+        body {
+            background: url(https://i.postimg.cc/YStbKxX1/pexels-photo-1229861.jpg) center no-repeat;
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .navbar h2 a {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        /* Navigation Links */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            padding: 10px;
+            transition: border 0.3s;
+        }
+
+        nav ul li:hover a {
+            border: 2px solid white;
+            padding: 8px;
+        }
+
+        /* Main Content */
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80%;
+        }
+
+        .content article {
+            text-align: center;
+            max-width: 460px;
+        }
+
+        .content p {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .content input {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .content input:first-of-type {
+            background-color: teal;
+            color: white;
+        }
+
+        .content input:last-of-type {
+            background-color: white;
+            color: black;
+        }
+
+        .content input:hover {
+            background: linear-gradient(to right, #d0d0d0, white);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtSH1E2nGfrJbN3NjDkLyGGcHKYyFR5zQkBrJnWuE8Qw&s" alt="College Logo" style="height: 40px; width: 80px;">
+            <!-- Update path to logo -->
+        </div>
+        <h2><a href="#">ICFAI University Jharkhand</a></h2>
+        <nav>
+            <ul>
+                <li><a href="/faculty/login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <article>
+            <p>Visiting Faculty portal </p>
+            <!-- <input type="button" value="Explore More" />
+            <input type="button" value="Watch Videos" /> -->
+        </article>
+    </div>
+</body>
+
+</html>

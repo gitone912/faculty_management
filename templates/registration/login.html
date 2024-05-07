@@ -1,0 +1,55 @@
+<!-- In templates/registration/login.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Login</h2>
+
+    <!-- Form for user login -->
+    <div class="form-container">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required value="{{ form.username.value }}">
+                {% if form.username.errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required value="{{ form.password.value }}">
+                {% if form.password.errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me" {% if form.remember_me.value %}checked{% endif %}>
+                <label class="form-check-label" for="remember_me">Remember me</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+
+    <!-- Additional login options -->
+    <div class="additional-options mt-3">
+        <a href="">Forgot your password?</a>
+        <!-- Include links to other authentication actions (e.g., password reset) if needed -->
+    </div>
+</div>
+{% endblock %}

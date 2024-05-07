@@ -1,0 +1,79 @@
+<!-- In templates/faculty_management/manage_faculty.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Manage Faculty Accounts</h2>
+
+    <!-- Form for creating/updating faculty -->
+    <div class="form-container">
+        <h3>Add/Update Faculty</h3>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="first_name" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+
+    <!-- List of existing faculty members -->
+    <div class="faculty-list">
+        <h3>Faculty List</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for faculty in faculties %}
+                    <tr>
+                        <td>{{ faculty.username }}</td>
+                        <td>{{ faculty.first_name }}</td>
+                        <td>{{ faculty.last_name }}</td>
+                        <td>{{ faculty.email }}</td>
+                        <td>
+                            <!-- You can add links for edit and delete actions -->
+                            <a href="{% url 'edit_faculty' faculty.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                            <a href="{% url 'delete_faculty' faculty.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Display success and error messages -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
