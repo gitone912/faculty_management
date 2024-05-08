@@ -75,11 +75,23 @@ WSGI_APPLICATION = "faculty_management.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "verceldb",
+        'USER': 'default',
+        'PASSWORD': 'itreLEFl8IY4',
+        'HOST': 'ep-shiny-fire-a1w9wrs9-pooler.ap-southeast-1.aws.neon.tech',
+        'PORT': 5432,
     }
 }
+# POSTGRES_URL="postgres://default:itreLEFl8IY4@ep-shiny-fire-a1w9wrs9-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require"
+# POSTGRES_PRISMA_URL="postgres://default:itreLEFl8IY4@ep-shiny-fire-a1w9wrs9-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15"
+# POSTGRES_URL_NO_SSL="postgres://default:itreLEFl8IY4@ep-shiny-fire-a1w9wrs9-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb"
+# POSTGRES_URL_NON_POOLING="postgres://default:itreLEFl8IY4@ep-shiny-fire-a1w9wrs9.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require"
+# POSTGRES_USER="default"
+# POSTGRES_HOST="ep-shiny-fire-a1w9wrs9-pooler.ap-southeast-1.aws.neon.tech"
+# POSTGRES_PASSWORD="itreLEFl8IY4"
+# POSTGRES_DATABASE="verceldb"
 
 
 # Password validation
