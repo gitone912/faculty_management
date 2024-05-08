@@ -19,6 +19,9 @@ from django.urls import path , include
 from faculty.views import home
 from faculty.views import error_404, error_500
 from django.conf.urls import handler404 ,handler500
+#import errors solvve
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 handler404 = error_404
@@ -28,3 +31,5 @@ urlpatterns = [
     path("faculty/", include("faculty.urls")),
     path("",home)
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
